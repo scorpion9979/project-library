@@ -90,6 +90,41 @@ suite('Functional Tests', function() {
     suite('POST /api/books/[id] => add comment/expect book object with id', function() {
 
       test('Test POST /api/books/[id] with comment', function(done) {
+        chai.request(server)
+            .post('/api/books/111111111111111111111111')
+            .send({
+              comment: 'An erotic romantic story about functional tests',
+            })
+            .end(function(err, res) {
+              assert.equal(res.status, 200);
+              assert.property(res.body, 'comments', 'Book should contain comments');
+              assert.property(res.body, 'title', 'Book should contain title');
+              assert.property(res.body, '_id', 'Book should contain _id');
+              assert.isArray(res.body.comments, 'Comments should be an array');
+              assert.equal(res.body.comments.slice(-1), 'An erotic romantic story about functional tests',
+              'New comment should be appended at the end of array of comments');
+              done();
+            });
+      });
+
+      test('Test POST /api/books/[id] with id not in db',  function(done) {
+        chai.request(server)
+            .post('/api/books/000000000000000000000000')
+            .send({
+              comment: 'An erotic romantic story about functional tests',
+            })
+            .end(function(err, res) {
+              assert.equal(res.status, 400);
+              assert.equal(res.text, 'no book exists');
+              done();
+            });
+      });
+
+    });
+
+    suite('DELETE /api/books/[id] => delete object with id', function() {
+
+      test('Test DELETE /api/books/[id]', function(done) {
         // done();
       });
 
