@@ -149,9 +149,14 @@ suite('Functional Tests', function() {
     suite('DELETE /api/books => delete all book objects', function() {
 
       test('Test DELETE /api/books', function(done) {
-        // done();
+        chai.request(server)
+            .del('/api/books')
+            .end(function(err, res) {
+              assert.equal(res.status, 200);
+              assert.equal(res.text, 'complete delete successful');
+              done();
+            });
       });
-
     });
 
   });
