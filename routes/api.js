@@ -70,8 +70,16 @@ module.exports = function(app) {
 
   app.route('/api/books/:id')
     .get(function(req, res) {
-      var bookid = req.params.id;
-      // json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
+      let bookid = req.params.id;
+      Book.findById(bookid, function(err, book) {
+        if (!book) {
+          res.status(400)
+             .send('no book exists');
+        } else {
+          res.status(200)
+             .send(book);
+        }
+      });
     })
 
     .post(function(req, res) {
