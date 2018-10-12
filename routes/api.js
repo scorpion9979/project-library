@@ -30,6 +30,20 @@ module.exports = function(app) {
     .get(function(req, res) {
       // response will be array of book objects
       // json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]
+      Book.find({}, function(err, books) {
+        if (err) {
+          res.status(400)
+             .send(err);
+        } else {
+          let result = books.map(e => ({
+            _id: e._id,
+            title: e.title,
+            commentcount: e.comments.length,
+          }));
+          res.status(200)
+             .send(result);
+        }
+      });
     })
 
     .post(function(req, res) {
