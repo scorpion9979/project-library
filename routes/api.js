@@ -33,8 +33,21 @@ module.exports = function(app) {
     })
 
     .post(function(req, res) {
-      var title = req.body.title;
-      // response will contain new book object including atleast _id and title
+      let title = req.body.title;
+      let id = new ObjectId();
+      let book = new Book({
+        _id: id,
+        title: title,
+      });
+      book.save(function(err, doc) {
+        if (err) {
+          res.status(400)
+             .send('missing title');
+        } else {
+          res.status(200)
+             .send(doc);
+        }
+      });
     })
 
     .delete(function(req, res) {
