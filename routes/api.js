@@ -65,7 +65,15 @@ module.exports = function(app) {
     })
 
     .delete(function(req, res) {
-      // if successful response will be 'complete delete successful'
+      Book.remove({}, function(err, books) {
+        if (err) {
+          res.status(400)
+             .send(err);
+        } else {
+          res.status(200)
+             .send('complete delete successful');
+        }
+      });
     });
 
   app.route('/api/books/:id')
