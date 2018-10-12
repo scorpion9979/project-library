@@ -22,7 +22,10 @@ suite('Functional Tests', function() {
       test('Test POST /api/books with title', function(done) {
         chai.request(server)
             .post('/api/books')
-            .send({title: '50 Shades of Testing'})
+            .send({
+              _id: '111111111111111111111111',
+              title: '50 Shades of Testing',
+            })
             .end(function(err, res) {
               assert.equal(res.status, 200);
               assert.equal(res.body.title, '50 Shades of Testing');
@@ -33,7 +36,10 @@ suite('Functional Tests', function() {
       test('Test POST /api/books with no title given', function(done) {
         chai.request(server)
             .post('/api/books')
-            .send({title: ''})
+            .send({
+              _id: '111111111111111111111111',
+              title: '',
+            })
             .end(function(err, res) {
               assert.equal(res.status, 400);
               assert.equal(res.text, 'missing title');

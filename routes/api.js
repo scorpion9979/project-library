@@ -28,8 +28,6 @@ module.exports = function(app) {
 
   app.route('/api/books')
     .get(function(req, res) {
-      // response will be array of book objects
-      // json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]
       Book.find({}, function(err, books) {
         if (err) {
           res.status(400)
@@ -48,7 +46,8 @@ module.exports = function(app) {
 
     .post(function(req, res) {
       let title = req.body.title;
-      let id = new ObjectId();
+      let reqId = req.body._id;
+      let id = reqId ? reqId : new ObjectId();
       let book = new Book({
         _id: id,
         title: title,
