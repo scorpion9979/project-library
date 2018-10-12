@@ -125,6 +125,30 @@ suite('Functional Tests', function() {
     suite('DELETE /api/books/[id] => delete object with id', function() {
 
       test('Test DELETE /api/books/[id]', function(done) {
+        chai.request(server)
+            .del('/api/books/111111111111111111111111')
+            .end(function(err, res) {
+              assert.equal(res.status, 200);
+              assert.equal(res.text, 'delete successful');
+              done();
+            });
+      });
+
+      test('Test DELETE /api/books/[id]  with id not in db', function(done) {
+        chai.request(server)
+            .del('/api/books/000000000000000000000000')
+            .end(function(err, res) {
+              assert.equal(res.status, 400);
+              assert.equal(res.text, 'no book exists');
+              done();
+            });
+      });
+
+    });
+
+    suite('DELETE /api/books => delete all book objects', function() {
+
+      test('Test DELETE /api/books', function(done) {
         // done();
       });
 
