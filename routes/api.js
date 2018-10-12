@@ -8,12 +8,21 @@
 
 'use strict';
 
-var expect = require('chai').expect;
-var MongoClient = require('mongodb').MongoClient;
-var ObjectId = require('mongodb').ObjectId;
-const MONGODB_CONNECTION_STRING = process.env.DB;
+const expect = require('chai').expect;
+const MongoClient = require('mongodb').MongoClient;
+const mongoose = require('mongoose');
+const ObjectId = require('mongodb').ObjectId;
 require('dotenv').config();
-// example connection: MongoClient.connect(MONGODB_CONNECTION_STRING, function(err, db) {});
+const CONNECTION_STRING = process.env.DB;
+mongoose.connect(CONNECTION_STRING);
+
+const Schema = mongoose.Schema;
+const bookSchema = new Schema({
+  _id: {type: String, required: true},
+  title: {type: String, required: true},
+  comments: {type: [String], required: false, default: []},
+});
+const Book = mongoose.model('Book', bookSchema);
 
 module.exports = function(app) {
 
