@@ -83,9 +83,25 @@ module.exports = function(app) {
     })
 
     .post(function(req, res) {
-      var bookid = req.params.id;
-      var comment = req.body.comment;
-      // json res format same as .get
+      let bookid = req.params.id;
+      let comment = req.body.comment;
+      Book.findById(bookid, function(error, book) {
+        if (!book) {
+          res.status(400)
+             .send('no book exists');
+        } else {
+          book.comments.push(comment);
+          book.save(function(err, doc) {
+            if (err) {
+              res.status(400)
+                .send(err);
+            } else {
+              res.status(200)
+                .send(doc);
+            }
+          });
+        }
+      });
     })
 
     .delete(function(req, res) {
